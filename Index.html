@@ -228,7 +228,7 @@
       <span class="league-pill knight">🏆 Knight · Div 3</span>
       <span class="league-pill clegg">🔵 Clegg · Div 3</span>
       <span class="league-pill parl">🟣 Parliamentary · Div 1</span>
-      <span class="league-pill util">🟠 Utilities · Div 1</span>
+      <span class="league-pill util">🟠 Utilities · Div 1A</span>
     </div>
     <div id="next-match-container"></div>
     <div class="section-heading">Coming Up <small>Next 5 matches</small></div>
@@ -322,7 +322,7 @@
     </div>
     <div class="info-row">
       <div class="info-card"><div class="info-card-title">Parliamentary</div><div class="info-card-value" style="color:var(--purple)">Division 1 · Thurs 1:30pm</div></div>
-      <div class="info-card"><div class="info-card-title">Utilities</div><div class="info-card-value" style="color:var(--orange)">Division 1 · Thurs 6:30pm</div></div>
+      <div class="info-card"><div class="info-card-title">Utilities</div><div class="info-card-value" style="color:var(--orange)">Division 1 Team A · Thurs 6:30pm<br>Contact: Paul Walton</div></div>
     </div>
     <div class="info-card">
       <div class="info-card-title">Season Deadline</div>
@@ -441,15 +441,28 @@ const parlFixtures = [
   {game:17, date:'2026-08-20', opponent:'Benfield',                 home:false},
 ];
 
-// Utilities League Div 1 — Thursdays 6:30pm — fixtures TBC
+// Utilities League Division 1 Team A — Thursdays 6:30pm
 const utilFixtures = [
-  {game:1,  date:'2026-05-01', opponent:'TBC — fixtures awaited', home:null},
+  {game:1,  date:'2026-04-23', opponent:'Health & Security',    home:false},
+  {game:2,  date:'2026-04-30', opponent:'Collingwood B',        home:false},
+  {game:3,  date:'2026-05-07', opponent:'Collingwood A',        home:true },
+  {game:4,  date:'2026-05-14', opponent:'Linskill',             home:false},
+  {game:5,  date:'2026-05-28', opponent:'Ponteland A',          home:false},
+  {game:6,  date:'2026-06-11', opponent:'Benfield',             home:true },
+  {game:7,  date:'2026-06-25', opponent:'Gosforth Coxlodge A',  home:false},
+  {game:8,  date:'2026-07-02', opponent:'Health & Security',    home:true },
+  {game:9,  date:'2026-07-09', opponent:'Collingwood B',        home:true },
+  {game:10, date:'2026-07-23', opponent:'Collingwood B',        home:false},
+  {game:11, date:'2026-07-30', opponent:'Linskill',             home:true },
+  {game:12, date:'2026-08-13', opponent:'Ponteland A',          home:true },
+  {game:13, date:'2026-08-20', opponent:'Benfield',             home:false},
+  {game:14, date:'2026-08-27', opponent:'Gosforth Coxlodge A',  home:true },
 ];
 
 const knightTeams = ['Rockcliffe','Whitley & Monkseaton','Morpeth B','Health & Security','Gosforth Garden Village','Cowpen & Crofton','Centurion Park','Westerhope'];
 const cleggTeams  = ['Hexham House','Seghill','N.S.W.E.','Northumberland Linskill','Whitley & Monkseaton','Westerhope','Newbiggin','Gosforth Garden Village','Tynemouth'];
 const parlTeams   = ['Westerhope','Gosforth','Gosforth & Cox. Regents','Forest Hall Oak','Health & Security','Cramlington','Ponteland','Benfield'];
-const utilTeams   = ['Westerhope']; // expand when fixtures received
+const utilTeams   = ['Westerhope','Health & Security','Collingwood A','Collingwood B','Linskill','Ponteland A','Benfield','Gosforth Coxlodge A'];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 // Shared Google Sheet — same as GGV app, results prefixed 'wbc-'
