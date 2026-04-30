@@ -500,7 +500,11 @@ async function loadResults(){
     results = {};
     rows.forEach(row => {
       if(row.league && row.game !== undefined){
-        results[`${row.league}-${row.game}`] = {wbc: Number(row.ggv), opp: Number(row.opp)};
+        // Only load rows that belong to WBC (prefixed with wbc-)
+        if(String(row.league).startsWith('wbc-')){
+          const key = `${row.league}-${row.game}`;
+          results[key] = {wbc: Number(row.ggv), opp: Number(row.opp)};
+        }
       }
     });
   } catch(e) {
@@ -510,23 +514,25 @@ async function loadResults(){
 }
 
 async function saveResultToSheet(league, game, wbc, opp, date){
-  results[`${league}-${game}`] = {wbc, opp};
+  const prefixedLeague = `wbc-${league}`;
+  results[`${prefixedLeague}-${game}`] = {wbc, opp};
   try { localStorage.setItem('wbc-results-2026', JSON.stringify(results)); } catch(e){}
   renderAll();
   try {
     await fetch(SHEET_URL, {
       method:'POST',
-      body: JSON.stringify({league, game, ggv: wbc, opp, date}),
+      body: JSON.stringify({league: prefixedLeague, game, ggv: wbc, opp, date}),
     });
   } catch(e){}
 }
 
 async function deleteResultFromSheet(league, game){
-  delete results[`${league}-${game}`];
+  const prefixedLeague = `wbc-${league}`;
+  delete results[`${prefixedLeague}-${game}`];
   try { localStorage.setItem('wbc-results-2026', JSON.stringify(results)); } catch(e){}
   renderAll();
   try {
-    await fetch(SHEET_URL, {method:'POST', body:JSON.stringify({league,game,ggv:'',opp:'',date:''})});
+    await fetch(SHEET_URL, {method:'POST', body:JSON.stringify({league: prefixedLeague, game, ggv:'', opp:'', date:''})});
   } catch(e){}
 }
 
@@ -541,7 +547,7 @@ function leagueLabel(l){ return l==='knight'?'Knight Div 3':l==='clegg'?'Clegg D
 function leagueColor(l){ return l==='knight'?'var(--gold)':l==='clegg'?'var(--blue)':l==='parl'?'var(--purple)':'var(--orange)'; }
 function leagueLong(l){ return l==='knight'?'Knight Cup Div 3':l==='clegg'?'Clegg League Div 3':l==='parl'?'Parliamentary Div 1':l==='util'?'Utilities Div 1 Team A':'Utilities Div 3'; }
 
-function getResult(league,game){ return results[`${league}-${game}`]||null; }
+function getResult(league,game){ return results[`wbc-${league}-${game}`]||null; }
 function outcomeOf(r){ if(!r)return null; return r.wbc>r.opp?'win':r.wbc<r.opp?'loss':'draw'; }
 
 function allSorted(){
