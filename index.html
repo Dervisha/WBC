@@ -521,7 +521,6 @@ async function saveResultToSheet(league, game, wbc, opp, date){
   try {
     await fetch(SHEET_URL, {
       method:'POST',
-      mode:'no-cors',
       body: JSON.stringify({league: prefixedLeague, game, ggv: wbc, opp, date}),
     });
   } catch(e){}
@@ -533,7 +532,6 @@ async function deleteResultFromSheet(league, game){
   try { localStorage.setItem('wbc-results-2026', JSON.stringify(results)); } catch(e){}
   renderAll();
   try {
-    await fetch(SHEET_URL, {method:'POST', mode:'no-cors', body:JSON.stringify({league: prefixedLeague, game, ggv:'', opp:'', date:''})});
   } catch(e){}
 }
 
