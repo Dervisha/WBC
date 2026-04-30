@@ -519,10 +519,8 @@ async function saveResultToSheet(league, game, wbc, opp, date){
   try { localStorage.setItem('wbc-results-2026', JSON.stringify(results)); } catch(e){}
   renderAll();
   try {
-    await fetch(SHEET_URL, {
-      method:'POST',
-      body: JSON.stringify({league: prefixedLeague, game, ggv: wbc, opp, date}),
-    });
+    const url = `${SHEET_URL}?action=save&league=${encodeURIComponent(prefixedLeague)}&game=${game}&ggv=${wbc}&opp=${opp}&date=${encodeURIComponent(date)}`;
+    await fetch(url, {mode:'no-cors'});
   } catch(e){}
 }
 
@@ -532,6 +530,8 @@ async function deleteResultFromSheet(league, game){
   try { localStorage.setItem('wbc-results-2026', JSON.stringify(results)); } catch(e){}
   renderAll();
   try {
+    const url = `${SHEET_URL}?action=save&league=${encodeURIComponent(prefixedLeague)}&game=${game}&ggv=&opp=&date=`;
+    await fetch(url, {mode:'no-cors'});
   } catch(e){}
 }
 
