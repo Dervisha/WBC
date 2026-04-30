@@ -589,13 +589,18 @@ function saveResult(){
   if(isNaN(wbc)||isNaN(opp)){alert('Please enter both scores');return;}
   const allF=[...knightFixtures,...cleggFixtures,...parlFixtures,...utilFixtures];
   const f=allF.find(x=>x.game===modalFixture.game&&x.league===modalFixture.league)||{};
+  const league=modalFixture.league;
+  const game=modalFixture.game;
+  const date=f.date||'';
   closeModal();
-  saveResultToSheet(modalFixture.league,modalFixture.game,wbc,opp,f.date||'');
+  saveResultToSheet(league,game,wbc,opp,date);
 }
 function clearResult(){
   if(!modalFixture)return;
+  const league=modalFixture.league;
+  const game=modalFixture.game;
   closeModal();
-  deleteResultFromSheet(modalFixture.league,modalFixture.game);
+  deleteResultFromSheet(league,game);
 }
 
 // ── FIXTURE CARD ──────────────────────────────────────────────────────────────
