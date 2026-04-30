@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Westerhope Bowls Club · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red-deep: #3a0a0a;
+    --red-mid: #7a1a1a;
+    --red-bright: #c0392b;
+    --red-light: #e8a0a0;
+    --cream: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --white: #fdfcf9;
+    --blue: #6baed6;
+    --blue-dim: rgba(107,174,214,0.15);
+    --purple: #b388e8;
+    --purple-dim: rgba(179,136,232,0.15);
+    --orange: #e8a44c;
+    --orange-dim: rgba(232,164,76,0.15);
+    --green-badge: #52b788;
+    --loss-red: #e07070;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--red-deep); color:var(--cream); min-height:100vh; }
+
+  header { background:var(--red-deep); border-bottom:1px solid rgba(232,160,160,0.15); padding:0 1.2rem; position:sticky; top:0; z-index:100; }
+  .header-inner { max-width:640px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:56px; }
+  .club-brand { display:flex; align-items:center; gap:10px; }
+  .club-crest { width:36px; height:36px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:11px; font-weight:900; color:var(--red-deep); flex-shrink:0; }
+  .club-name { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--cream); line-height:1.1; }
+  .club-name span { display:block; font-family:'DM Mono',monospace; font-size:9px; font-weight:400; color:var(--red-light); letter-spacing:0.12em; text-transform:uppercase; margin-top:1px; }
+  .header-right { display:flex; align-items:center; gap:8px; }
+  .season-badge { font-family:'DM Mono',monospace; font-size:10px; color:var(--gold); letter-spacing:0.1em; border:1px solid var(--gold); padding:3px 8px; border-radius:20px; }
+  .admin-toggle { background:none; border:1px solid rgba(232,160,160,0.3); color:var(--red-light); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; padding:4px 9px; border-radius:20px; cursor:pointer; transition:all 0.2s; }
+  .admin-toggle.on { border-color:var(--gold); color:var(--gold); background:rgba(201,168,76,0.1); }
+
+  .nav-tabs { background:rgba(58,10,10,0.97); border-bottom:1px solid rgba(232,160,160,0.1); position:sticky; top:56px; z-index:99; }
+  .nav-tabs-inner { max-width:640px; margin:0 auto; display:flex; overflow-x:auto; scrollbar-width:none; }
+  .nav-tabs-inner::-webkit-scrollbar { display:none; }
+  .tab-btn { flex-shrink:0; background:none; border:none; color:var(--red-light); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:14px 18px; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; white-space:nowrap; }
+  .tab-btn:hover { color:var(--cream); }
+  .tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+  main { max-width:640px; margin:0 auto; padding:0 1rem 6rem; }
+  .section { display:none; padding-top:1.5rem; }
+  .section.active { display:block; }
+
+  .hero { background:linear-gradient(135deg,var(--red-mid) 0%,var(--red-deep) 100%); border:1px solid rgba(232,160,160,0.2); border-radius:16px; padding:1.8rem 1.5rem; margin-bottom:1.2rem; position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:-40px; right:-40px; width:150px; height:150px; background:radial-gradient(circle,rgba(192,57,43,0.2) 0%,transparent 70%); border-radius:50%; }
+  .hero-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; color:var(--red-light); text-transform:uppercase; margin-bottom:6px; }
+  .hero-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:900; color:var(--white); line-height:1.1; margin-bottom:6px; }
+  .hero-sub { font-size:13px; color:var(--red-light); opacity:0.85; }
+  .hero-stats { display:flex; gap:1rem; margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid rgba(232,160,160,0.15); }
+  .stat-item { flex:1; }
+  .stat-num { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:var(--gold); }
+  .stat-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red-light); margin-top:2px; }
+
+  .league-pills { display:flex; gap:6px; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .league-pill { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:5px 10px; border-radius:20px; }
+  .league-pill.knight { background:rgba(201,168,76,0.15); color:var(--gold); border:1px solid rgba(201,168,76,0.3); }
+  .league-pill.clegg  { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(107,174,214,0.3); }
+  .league-pill.parl   { background:var(--purple-dim); color:var(--purple); border:1px solid rgba(179,136,232,0.3); }
+  .league-pill.util   { background:var(--orange-dim); color:var(--orange); border:1px solid rgba(232,164,76,0.3); }
+
+  .next-match-card { background:var(--gold); border-radius:14px; padding:1.2rem 1.4rem; margin-bottom:1.2rem; color:var(--red-deep); }
+  .next-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; opacity:0.7; margin-bottom:8px; }
+  .next-match-header { display:flex; justify-content:space-between; align-items:flex-start; }
+  .next-teams { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; line-height:1.3; }
+  .next-venue-badge { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; background:rgba(58,10,10,0.2); color:var(--red-deep); padding:3px 8px; border-radius:20px; white-space:nowrap; margin-left:8px; flex-shrink:0; }
+  .next-match-footer { display:flex; gap:1rem; margin-top:10px; flex-wrap:wrap; }
+  .next-detail { font-family:'DM Mono',monospace; font-size:10px; display:flex; align-items:center; gap:4px; }
+
+  .section-heading { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--cream); margin-bottom:1rem; display:flex; align-items:baseline; gap:10px; }
+  .section-heading small { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--red-light); font-weight:400; }
+
+  .fixture-group-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--red-bright); margin:1.2rem 0 0.5rem; padding-left:2px; }
+
+  .fixture-card { background:rgba(122,26,26,0.25); border:1px solid rgba(232,160,160,0.12); border-radius:12px; padding:0.9rem 1.1rem; margin-bottom:0.5rem; display:flex; align-items:center; gap:12px; transition:border-color 0.2s,background 0.2s; }
+  .fixture-card.clickable { cursor:pointer; }
+  .fixture-card.clickable:hover { border-color:rgba(232,160,160,0.3); background:rgba(122,26,26,0.4); }
+  .fixture-card.home-knight { border-left:3px solid var(--gold); }
+  .fixture-card.away-knight { border-left:3px solid var(--red-bright); }
+  .fixture-card.home-clegg  { border-left:3px solid var(--blue); }
+  .fixture-card.away-clegg  { border-left:3px solid rgba(107,174,214,0.5); }
+  .fixture-card.home-parl   { border-left:3px solid var(--purple); }
+  .fixture-card.away-parl   { border-left:3px solid rgba(179,136,232,0.5); }
+  .fixture-card.home-util   { border-left:3px solid var(--orange); }
+  .fixture-card.away-util   { border-left:3px solid rgba(232,164,76,0.5); }
+  .fixture-card.bye         { opacity:0.4; }
+  .fixture-card.has-result  { background:rgba(122,26,26,0.35); }
+
+  .fixture-date-block { min-width:38px; text-align:center; flex-shrink:0; }
+  .fix-day { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; color:var(--gold-light); line-height:1; }
+  .fix-month { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red-light); margin-top:1px; }
+  .fixture-divider { width:1px; height:34px; background:rgba(232,160,160,0.15); flex-shrink:0; }
+  .fixture-info { flex:1; min-width:0; }
+  .fixture-opponent { font-size:14px; font-weight:500; color:var(--cream); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .fixture-meta { display:flex; gap:6px; margin-top:3px; align-items:center; flex-wrap:wrap; }
+
+  .venue-pill { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.08em; padding:2px 6px; border-radius:10px; text-transform:uppercase; }
+  .venue-pill.home-knight { background:rgba(201,168,76,0.2); color:var(--gold); border:1px solid rgba(201,168,76,0.3); }
+  .venue-pill.away-knight { background:rgba(192,57,43,0.2); color:var(--red-light); border:1px solid rgba(192,57,43,0.3); }
+  .venue-pill.home-clegg  { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(107,174,214,0.3); }
+  .venue-pill.away-clegg  { background:rgba(107,174,214,0.08); color:var(--blue); border:1px solid rgba(107,174,214,0.2); }
+  .venue-pill.home-parl   { background:var(--purple-dim); color:var(--purple); border:1px solid rgba(179,136,232,0.3); }
+  .venue-pill.away-parl   { background:rgba(179,136,232,0.08); color:var(--purple); border:1px solid rgba(179,136,232,0.2); }
+  .venue-pill.home-util   { background:var(--orange-dim); color:var(--orange); border:1px solid rgba(232,164,76,0.3); }
+  .venue-pill.away-util   { background:rgba(232,164,76,0.08); color:var(--orange); border:1px solid rgba(232,164,76,0.2); }
+
+  .result-badge { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; padding:3px 8px; border-radius:8px; white-space:nowrap; flex-shrink:0; }
+  .result-badge.win  { background:rgba(82,183,136,0.2); color:var(--green-badge); border:1px solid rgba(82,183,136,0.3); }
+  .result-badge.loss { background:rgba(224,112,112,0.15); color:var(--loss-red); border:1px solid rgba(224,112,112,0.25); }
+  .result-badge.draw { background:rgba(201,168,76,0.15); color:var(--gold); border:1px solid rgba(201,168,76,0.25); }
+  .edit-pencil { font-size:14px; flex-shrink:0; opacity:0.5; }
+
+  .filter-bar { display:flex; gap:6px; margin-bottom:1rem; flex-wrap:wrap; }
+  .filter-btn { background:rgba(122,26,26,0.3); border:1px solid rgba(232,160,160,0.15); color:var(--red-light); font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 12px; border-radius:20px; cursor:pointer; transition:all 0.2s; }
+  .filter-btn.f-active  { background:rgba(192,57,43,0.2); border-color:var(--red-bright); color:var(--cream); }
+  .filter-btn.f-knight  { background:rgba(201,168,76,0.15); border-color:var(--gold); color:var(--gold); }
+  .filter-btn.f-clegg   { background:var(--blue-dim); border-color:var(--blue); color:var(--blue); }
+  .filter-btn.f-parl    { background:var(--purple-dim); border-color:var(--purple); color:var(--purple); }
+  .filter-btn.f-util    { background:var(--orange-dim); border-color:var(--orange); color:var(--orange); }
+
+  .colour-key { display:flex; gap:10px; margin-bottom:1rem; flex-wrap:wrap; }
+  .key-item { display:flex; align-items:center; gap:6px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.08em; color:var(--red-light); }
+  .key-swatch { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+
+  .table-note { font-family:'DM Mono',monospace; font-size:9px; color:var(--red-light); letter-spacing:0.08em; margin-bottom:0.8rem; opacity:0.7; }
+  .league-table { background:rgba(122,26,26,0.2); border:1px solid rgba(232,160,160,0.12); border-radius:12px; overflow:hidden; margin-bottom:1.5rem; }
+  .table-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:10px 12px 6px; }
+  .table-title.knight-title { color:var(--gold); }
+  .table-title.clegg-title  { color:var(--blue); }
+  .table-title.parl-title   { color:var(--purple); }
+  .table-title.util-title   { color:var(--orange); }
+  .table-header { display:grid; grid-template-columns:22px 1fr 26px 26px 26px 26px 36px; gap:4px; padding:8px 12px; background:rgba(232,160,160,0.05); border-bottom:1px solid rgba(232,160,160,0.1); border-top:1px solid rgba(232,160,160,0.08); }
+  .th { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red-light); opacity:0.6; }
+  .table-row { display:grid; grid-template-columns:22px 1fr 26px 26px 26px 26px 36px; gap:4px; padding:9px 12px; border-bottom:1px solid rgba(232,160,160,0.06); align-items:center; }
+  .table-row:last-child { border-bottom:none; }
+  .table-row.wbc-row { background:rgba(201,168,76,0.07); }
+  .td-pos { font-family:'DM Mono',monospace; font-size:10px; color:var(--red-light); opacity:0.7; }
+  .td-name { font-size:12px; font-weight:500; color:var(--cream); }
+  .td-name.wbc-name { color:var(--gold); font-weight:600; }
+  .td-num { font-family:'DM Mono',monospace; font-size:11px; text-align:center; color:rgba(245,240,232,0.65); }
+  .td-pts { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; color:var(--gold-light); text-align:right; }
+
+  .admin-banner { background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.25); border-radius:10px; padding:10px 14px; margin-bottom:1rem; font-family:'DM Mono',monospace; font-size:10px; color:var(--gold); letter-spacing:0.08em; display:none; }
+  .admin-banner.show { display:block; }
+
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(20,5,5,0.85); z-index:200; align-items:flex-end; justify-content:center; backdrop-filter:blur(4px); }
+  .modal-overlay.open { display:flex; }
+  .modal { background:#3a1010; border:1px solid rgba(232,160,160,0.2); border-radius:20px 20px 0 0; padding:1.6rem 1.4rem 2.4rem; width:100%; max-width:640px; animation:slideUp 0.25s ease; }
+  @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+  .modal-handle { width:36px; height:4px; background:rgba(232,160,160,0.3); border-radius:2px; margin:0 auto 1.2rem; }
+  .modal-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--cream); margin-bottom:4px; }
+  .modal-sub { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--red-light); margin-bottom:1.4rem; }
+  .score-row { display:flex; align-items:center; gap:12px; margin-bottom:1.2rem; }
+  .score-team { flex:1; font-size:13px; font-weight:500; color:var(--cream); }
+  .score-team.wbc-team { color:var(--gold); font-weight:600; }
+  .score-input { width:70px; background:rgba(122,26,26,0.4); border:1px solid rgba(232,160,160,0.25); border-radius:10px; padding:10px 12px; font-family:'DM Mono',monospace; font-size:20px; font-weight:500; color:var(--cream); text-align:center; outline:none; transition:border-color 0.2s; -moz-appearance:textfield; }
+  .score-input::-webkit-outer-spin-button,.score-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+  .score-input:focus { border-color:var(--gold); }
+  .vs-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--red-light); opacity:0.6; }
+  .modal-actions { display:flex; gap:10px; margin-top:1.4rem; }
+  .btn-save { flex:1; background:var(--gold); color:var(--red-deep); border:none; border-radius:12px; padding:14px; font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:opacity 0.2s; }
+  .btn-save:hover { opacity:0.85; }
+  .btn-clear { background:rgba(224,112,112,0.15); color:var(--loss-red); border:1px solid rgba(224,112,112,0.25); border-radius:12px; padding:14px 18px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; }
+  .btn-cancel { background:rgba(122,26,26,0.4); color:var(--red-light); border:1px solid rgba(232,160,160,0.15); border-radius:12px; padding:14px 18px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; }
+
+  .info-card { background:rgba(122,26,26,0.2); border:1px solid rgba(232,160,160,0.12); border-radius:12px; padding:1.1rem 1.2rem; margin-bottom:0.7rem; }
+  .info-card-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--red-bright); margin-bottom:6px; }
+  .info-card-value { font-size:14px; color:var(--cream); line-height:1.6; }
+  .info-card-value a { color:var(--gold); text-decoration:none; }
+  .info-card-value a:hover { text-decoration:underline; }
+  .info-row { display:flex; gap:0.7rem; }
+  .info-row .info-card { flex:1; }
+  .empty-state { text-align:center; padding:3rem 1rem; color:var(--red-light); opacity:0.5; font-family:'DM Mono',monospace; font-size:11px; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .section.active > * { animation:fadeUp 0.3s ease both; }
+  .section.active > *:nth-child(2){animation-delay:0.05s}
+  .section.active > *:nth-child(3){animation-delay:0.1s}
+  .section.active > *:nth-child(4){animation-delay:0.15s}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="club-brand">
+      <div class="club-crest">WBC</div>
+      <div class="club-name">Westerhope <span>Bowling Club · 2026</span></div>
+    </div>
+    <div class="header-right">
+      <button class="admin-toggle" id="adminToggle" onclick="toggleAdmin()">✏️ Edit</button>
+      <div class="season-badge">2026</div>
+    </div>
+  </div>
+</header>
+
+<div class="nav-tabs">
+  <div class="nav-tabs-inner">
+    <button class="tab-btn active" onclick="showTab('home',this)">Home</button>
+    <button class="tab-btn" onclick="showTab('fixtures',this)">Fixtures</button>
+    <button class="tab-btn" onclick="showTab('tables',this)">Tables</button>
+    <button class="tab-btn" onclick="showTab('club',this)">Club Info</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- HOME -->
+  <div class="section active" id="tab-home">
+    <div class="hero">
+      <div class="hero-label">Season 2026 · Four Leagues</div>
+      <div class="hero-title">Westerhope<br>Bowling Club</div>
+      <div class="hero-sub">Westerhope, Newcastle upon Tyne</div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num" id="stat-played">0</div><div class="stat-label">Played</div></div>
+        <div class="stat-item"><div class="stat-num" id="stat-wins">0</div><div class="stat-label">Wins</div></div>
+        <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Leagues</div></div>
+      </div>
+    </div>
+    <div class="league-pills">
+      <span class="league-pill knight">🏆 Knight · Div 3</span>
+      <span class="league-pill clegg">🔵 Clegg · Div 3</span>
+      <span class="league-pill parl">🟣 Parliamentary · Div 1</span>
+      <span class="league-pill util">🟠 Utilities · Div 1</span>
+    </div>
+    <div id="next-match-container"></div>
+    <div class="section-heading">Coming Up <small>Next 5 matches</small></div>
+    <div id="upcoming-list"></div>
+  </div>
+
+  <!-- FIXTURES -->
+  <div class="section" id="tab-fixtures">
+    <div class="section-heading">All Fixtures <small>Tap to enter result</small></div>
+    <div class="admin-banner" id="adminBanner">✏️ Edit mode on — tap any past fixture to enter or update the score</div>
+    <div class="colour-key">
+      <div class="key-item"><div class="key-swatch" style="background:var(--gold)"></div>Knight H</div>
+      <div class="key-item"><div class="key-swatch" style="background:var(--red-bright)"></div>Knight A</div>
+      <div class="key-item"><div class="key-swatch" style="background:var(--blue)"></div>Clegg H</div>
+      <div class="key-item"><div class="key-swatch" style="background:rgba(107,174,214,0.5)"></div>Clegg A</div>
+      <div class="key-item"><div class="key-swatch" style="background:var(--purple)"></div>Parl H</div>
+      <div class="key-item"><div class="key-swatch" style="background:var(--orange)"></div>Util H</div>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn f-active" id="fb-all"    onclick="filterFixtures('all')">All</button>
+      <button class="filter-btn"          id="fb-knight" onclick="filterFixtures('knight')">Knight</button>
+      <button class="filter-btn"          id="fb-clegg"  onclick="filterFixtures('clegg')">Clegg</button>
+      <button class="filter-btn"          id="fb-parl"   onclick="filterFixtures('parl')">Parl</button>
+      <button class="filter-btn"          id="fb-util"   onclick="filterFixtures('util')">Utilities</button>
+      <button class="filter-btn"          id="fb-home"   onclick="filterFixtures('home')">Home</button>
+      <button class="filter-btn"          id="fb-away"   onclick="filterFixtures('away')">Away</button>
+    </div>
+    <div id="fixtures-list"></div>
+  </div>
+
+  <!-- TABLES -->
+  <div class="section" id="tab-tables">
+    <div class="section-heading">League Tables <small>Live from results</small></div>
+    <p class="table-note">Updates as you enter results · Westerhope stats only</p>
+
+    <div class="league-table">
+      <div class="table-title knight-title">🏆 Knight Cup · Division 3</div>
+      <div class="table-header">
+        <div class="th">#</div><div class="th">Team</div>
+        <div class="th" style="text-align:center">P</div><div class="th" style="text-align:center">W</div>
+        <div class="th" style="text-align:center">D</div><div class="th" style="text-align:center">L</div>
+        <div class="th" style="text-align:right">Pts</div>
+      </div>
+      <div id="knight-table"></div>
+    </div>
+
+    <div class="league-table">
+      <div class="table-title clegg-title">🔵 Clegg League · Division 3</div>
+      <div class="table-header">
+        <div class="th">#</div><div class="th">Team</div>
+        <div class="th" style="text-align:center">P</div><div class="th" style="text-align:center">W</div>
+        <div class="th" style="text-align:center">D</div><div class="th" style="text-align:center">L</div>
+        <div class="th" style="text-align:right">Pts</div>
+      </div>
+      <div id="clegg-table"></div>
+    </div>
+
+    <div class="league-table">
+      <div class="table-title parl-title">🟣 Parliamentary League · Division 1</div>
+      <div class="table-header">
+        <div class="th">#</div><div class="th">Team</div>
+        <div class="th" style="text-align:center">P</div><div class="th" style="text-align:center">W</div>
+        <div class="th" style="text-align:center">D</div><div class="th" style="text-align:center">L</div>
+        <div class="th" style="text-align:right">Pts</div>
+      </div>
+      <div id="parl-table"></div>
+    </div>
+
+    <div class="league-table">
+      <div class="table-title util-title">🟠 Utilities League · Division 1</div>
+      <div class="table-header">
+        <div class="th">#</div><div class="th">Team</div>
+        <div class="th" style="text-align:center">P</div><div class="th" style="text-align:center">W</div>
+        <div class="th" style="text-align:center">D</div><div class="th" style="text-align:center">L</div>
+        <div class="th" style="text-align:right">Pts</div>
+      </div>
+      <div id="util-table"></div>
+    </div>
+  </div>
+
+  <!-- CLUB INFO -->
+  <div class="section" id="tab-club">
+    <div class="section-heading">Club Info</div>
+    <div class="info-card">
+      <div class="info-card-title">Ground</div>
+      <div class="info-card-value">Westerhope, Newcastle upon Tyne</div>
+    </div>
+    <div class="info-row">
+      <div class="info-card"><div class="info-card-title">Knight Cup</div><div class="info-card-value" style="color:var(--gold)">Division 3 · Tues 6:30pm</div></div>
+      <div class="info-card"><div class="info-card-title">Clegg League</div><div class="info-card-value" style="color:var(--blue)">Division 3 · Wed 6:30pm</div></div>
+    </div>
+    <div class="info-row">
+      <div class="info-card"><div class="info-card-title">Parliamentary</div><div class="info-card-value" style="color:var(--purple)">Division 1 · Thurs 1:30pm</div></div>
+      <div class="info-card"><div class="info-card-title">Utilities</div><div class="info-card-value" style="color:var(--orange)">Division 1 · Thurs 6:30pm</div></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Season Deadline</div>
+      <div class="info-card-value">All outstanding matches by <strong>Saturday 29 August 2026</strong></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">League Secretary (Knight & Clegg)</div>
+      <div class="info-card-value">Jim Holmes · <a href="tel:07375519006">07375 519006</a><br><a href="mailto:maltot44@gmail.com">maltot44@gmail.com</a></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Parliamentary League</div>
+      <div class="info-card-value"><a href="https://fairney14.wixsite.com/parliamentary-league" target="_blank">fairney14.wixsite.com/parliamentary-league</a></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">County Contacts</div>
+      <div class="info-card-value">Men's: Jason Proctor · <a href="tel:07307207956">07307 207956</a><br>Women's: Sheila Storey · <a href="tel:07849518805">07849 518805</a></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Bowls Northumberland</div>
+      <div class="info-card-value"><a href="https://www.bowlsnorthumberland.com" target="_blank">bowlsnorthumberland.com</a></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalIfOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Enter Result</div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="score-row">
+      <div class="score-team wbc-team">WBC</div>
+      <input class="score-input" id="scoreWBC" type="number" min="0" max="999" placeholder="—">
+      <div class="vs-label">vs</div>
+      <input class="score-input" id="scoreOpp" type="number" min="0" max="999" placeholder="—">
+      <div class="score-team" id="modalOppName" style="text-align:right;font-size:12px"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="saveResult()">Save Result</button>
+      <button class="btn-clear" onclick="clearResult()">Clear</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TODAY = new Date();
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const CLUB = 'Westerhope';
+
+// ── FIXTURES ──────────────────────────────────────────────────────────────────
+
+const knightFixtures = [
+  {game:1,  date:'2026-04-21', opponent:'Morpeth B',            home:true },
+  {game:2,  date:'2026-04-28', opponent:'Gosforth Garden Village', home:false},
+  {game:3,  date:'2026-05-05', opponent:'Centurion Park',       home:true },
+  {game:4,  date:'2026-05-12', opponent:'BYE',                  home:null },
+  {game:5,  date:'2026-05-19', opponent:'Whitley & Monkseaton', home:true },
+  {game:6,  date:'2026-05-26', opponent:'Health & Security',    home:false},
+  {game:7,  date:'2026-06-02', opponent:'Cowpen & Crofton',     home:true },
+  {game:8,  date:'2026-06-09', opponent:'BYE',                  home:null },
+  {game:9,  date:'2026-06-16', opponent:'Rockcliffe',           home:false},
+  {game:10, date:'2026-06-23', opponent:'Morpeth B',            home:false},
+  {game:11, date:'2026-06-30', opponent:'Gosforth Garden Village', home:true},
+  {game:12, date:'2026-07-07', opponent:'Centurion Park',       home:false},
+  {game:13, date:'2026-07-14', opponent:'BYE',                  home:null },
+  {game:14, date:'2026-07-21', opponent:'Whitley & Monkseaton', home:false},
+  {game:15, date:'2026-07-28', opponent:'Health & Security',    home:true },
+  {game:16, date:'2026-08-04', opponent:'Cowpen & Crofton',     home:false},
+  {game:17, date:'2026-08-11', opponent:'BYE',                  home:null },
+  {game:18, date:'2026-08-18', opponent:'Rockcliffe',           home:true },
+];
+
+const cleggFixtures = [
+  {game:1,  date:'2026-04-22', opponent:'Whitley & Monkseaton', home:true },
+  {game:2,  date:'2026-04-29', opponent:'Newbiggin',            home:false},
+  {game:3,  date:'2026-05-06', opponent:'Tynemouth',            home:false},
+  {game:4,  date:'2026-05-13', opponent:'Seghill',              home:false},
+  {game:5,  date:'2026-05-20', opponent:'Northumberland Linskill', home:false},
+  {game:6,  date:'2026-05-27', opponent:'BYE',                  home:null },
+  {game:7,  date:'2026-06-03', opponent:'Gosforth Garden Village', home:false},
+  {game:8,  date:'2026-06-10', opponent:'Hexham House',         home:true },
+  {game:9,  date:'2026-06-17', opponent:'N.S.W.E.',             home:false},
+  {game:10, date:'2026-06-24', opponent:'Whitley & Monkseaton', home:false},
+  {game:11, date:'2026-07-01', opponent:'Newbiggin',            home:true },
+  {game:12, date:'2026-07-08', opponent:'Tynemouth',            home:false},
+  {game:13, date:'2026-07-15', opponent:'Seghill',              home:true },
+  {game:14, date:'2026-07-22', opponent:'Northumberland Linskill', home:false},
+  {game:15, date:'2026-07-29', opponent:'BYE',                  home:null },
+  {game:16, date:'2026-08-05', opponent:'Gosforth Garden Village', home:true},
+  {game:17, date:'2026-08-12', opponent:'Hexham House',         home:false},
+  {game:18, date:'2026-08-19', opponent:'N.S.W.E.',             home:true },
+];
+
+// Parliamentary League Division 1 — Thursdays 1:30pm
+const parlFixtures = [
+  {game:1,  date:'2026-04-30', opponent:'Gosforth',                 home:false},
+  {game:2,  date:'2026-05-07', opponent:'Ponteland',                home:true },
+  {game:3,  date:'2026-05-14', opponent:'Gosforth & Cox. Regents',  home:false},
+  {game:4,  date:'2026-05-21', opponent:'BYE',                      home:null },
+  {game:5,  date:'2026-05-28', opponent:'BYE',                      home:null },
+  {game:6,  date:'2026-06-04', opponent:'Health & Security',        home:false},
+  {game:7,  date:'2026-06-11', opponent:'Forest Hall Oak',          home:true },
+  {game:8,  date:'2026-06-18', opponent:'Cramlington',              home:false},
+  {game:9,  date:'2026-06-25', opponent:'Benfield',                 home:true },
+  {game:10, date:'2026-07-02', opponent:'Gosforth',                 home:true },
+  {game:11, date:'2026-07-09', opponent:'Ponteland',                home:false},
+  {game:12, date:'2026-07-16', opponent:'Gosforth & Cox. Regents',  home:true },
+  {game:13, date:'2026-07-23', opponent:'Health & Security',        home:true },
+  {game:14, date:'2026-07-30', opponent:'BYE',                      home:null },
+  {game:15, date:'2026-08-06', opponent:'Forest Hall Oak',          home:false},
+  {game:16, date:'2026-08-13', opponent:'Cramlington',              home:true },
+  {game:17, date:'2026-08-20', opponent:'Benfield',                 home:false},
+];
+
+// Utilities League Div 1 — Thursdays 6:30pm — fixtures TBC
+const utilFixtures = [
+  {game:1,  date:'2026-05-01', opponent:'TBC — fixtures awaited', home:null},
+];
+
+const knightTeams = ['Rockcliffe','Whitley & Monkseaton','Morpeth B','Health & Security','Gosforth Garden Village','Cowpen & Crofton','Centurion Park','Westerhope'];
+const cleggTeams  = ['Hexham House','Seghill','N.S.W.E.','Northumberland Linskill','Whitley & Monkseaton','Westerhope','Newbiggin','Gosforth Garden Village','Tynemouth'];
+const parlTeams   = ['Westerhope','Gosforth','Gosforth & Cox. Regents','Forest Hall Oak','Health & Security','Cramlington','Ponteland','Benfield'];
+const utilTeams   = ['Westerhope']; // expand when fixtures received
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+// Shared Google Sheet — same as GGV app, results prefixed 'wbc-'
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxYZDw9GVIPrnPSqjuQvvu9xKXBZhj6EGutYWjMfzYELKU5eQzLXqxUBEf0aO8w7ytB/exec';
+let results = {};
+let adminMode = false;
+let modalFixture = null;
+
+function showLoadingState(on){
+  if(on) document.getElementById('upcoming-list').innerHTML='<div class="empty-state">Loading results...</div>';
+}
+
+async function loadResults(){
+  showLoadingState(true);
+  try {
+    const res = await fetch(SHEET_URL);
+    const rows = await res.json();
+    results = {};
+    rows.forEach(row => {
+      if(row.league && row.game !== undefined){
+        results[`${row.league}-${row.game}`] = {wbc: Number(row.ggv), opp: Number(row.opp)};
+      }
+    });
+  } catch(e) {
+    try { results = JSON.parse(localStorage.getItem('wbc-results-2026')||'{}'); } catch(e2){}
+  }
+  renderAll();
+}
+
+async function saveResultToSheet(league, game, wbc, opp, date){
+  results[`${league}-${game}`] = {wbc, opp};
+  try { localStorage.setItem('wbc-results-2026', JSON.stringify(results)); } catch(e){}
+  renderAll();
+  try {
+    await fetch(SHEET_URL, {
+      method:'POST',
+      body: JSON.stringify({league, game, ggv: wbc, opp, date}),
+    });
+  } catch(e){}
+}
+
+async function deleteResultFromSheet(league, game){
+  delete results[`${league}-${game}`];
+  try { localStorage.setItem('wbc-results-2026', JSON.stringify(results)); } catch(e){}
+  renderAll();
+  try {
+    await fetch(SHEET_URL, {method:'POST', body:JSON.stringify({league,game,ggv:'',opp:'',date:''})});
+  } catch(e){}
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function parseDate(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+function isPast(s){return parseDate(s)<TODAY;}
+function fmtDate(s){const d=parseDate(s);return{day:d.getDate(),month:MONTHS[d.getMonth()]};}
+function fullDate(s){const d=parseDate(s);return`${DAYS_LONG[d.getDay()]} ${d.getDate()} ${MONTHS_LONG[d.getMonth()]} 2026`;}
+
+function leagueTime(l){ return l==='parl'?'1:30pm Thu':l==='util'?'6:30pm Thu':'6:30pm'; }
+function leagueLabel(l){ return l==='knight'?'Knight Div 3':l==='clegg'?'Clegg Div 3':l==='parl'?'Parl Div 2':'Utilities Div 1'; }
+function leagueColor(l){ return l==='knight'?'var(--gold)':l==='clegg'?'var(--blue)':l==='parl'?'var(--purple)':'var(--orange)'; }
+function leagueLong(l){ return l==='knight'?'Knight Cup Div 3':l==='clegg'?'Clegg League Div 3':l==='parl'?'Parliamentary Div 2':'Utilities Div 1'; }
+
+function getResult(league,game){ return results[`${league}-${game}`]||null; }
+function outcomeOf(r){ if(!r)return null; return r.wbc>r.opp?'win':r.wbc<r.opp?'loss':'draw'; }
+
+function allSorted(){
+  return[
+    ...knightFixtures.map(f=>({...f,league:'knight'})),
+    ...cleggFixtures.map(f=>({...f,league:'clegg'})),
+    ...parlFixtures.map(f=>({...f,league:'parl'})),
+    ...utilFixtures.map(f=>({...f,league:'util'})),
+  ].sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────────────────
+function toggleAdmin(){
+  adminMode=!adminMode;
+  document.getElementById('adminToggle').textContent=adminMode?'✅ Done':'✏️ Edit';
+  document.getElementById('adminToggle').classList.toggle('on',adminMode);
+  document.getElementById('adminBanner').classList.toggle('show',adminMode);
+  renderAll();
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(league,game,opponent){
+  modalFixture={league,game,opponent};
+  const r=getResult(league,game);
+  document.getElementById('modalSub').textContent=`${leagueLong(league)} · Game ${game}`;
+  document.getElementById('modalOppName').textContent=opponent;
+  document.getElementById('scoreWBC').value=r?r.wbc:'';
+  document.getElementById('scoreOpp').value=r?r.opp:'';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('scoreWBC').focus(),300);
+}
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); modalFixture=null; }
+function closeModalIfOutside(e){ if(e.target===document.getElementById('modalOverlay'))closeModal(); }
+function saveResult(){
+  if(!modalFixture)return;
+  const wbc=parseInt(document.getElementById('scoreWBC').value);
+  const opp=parseInt(document.getElementById('scoreOpp').value);
+  if(isNaN(wbc)||isNaN(opp)){alert('Please enter both scores');return;}
+  const allF=[...knightFixtures,...cleggFixtures,...parlFixtures,...utilFixtures];
+  const f=allF.find(x=>x.game===modalFixture.game&&x.league===modalFixture.league)||{};
+  closeModal();
+  saveResultToSheet(modalFixture.league,modalFixture.game,wbc,opp,f.date||'');
+}
+function clearResult(){
+  if(!modalFixture)return;
+  closeModal();
+  deleteResultFromSheet(modalFixture.league,modalFixture.game);
+}
+
+// ── FIXTURE CARD ──────────────────────────────────────────────────────────────
+function fixtureCard(f,league){
+  const isBye=f.home===null;
+  const{day,month}=fmtDate(f.date);
+  const past=isPast(f.date);
+  const r=isBye?null:getResult(league,f.game);
+  const outcome=outcomeOf(r);
+  const tc=isBye?'bye':(f.home?`home-${league}`:`away-${league}`);
+  const canClick=!isBye&&(past||adminMode);
+  const onclick=canClick?`onclick="openModal('${league}',${f.game},'${f.opponent.replace(/'/g,"\\'")}')"` :'';
+
+  let rightEl='';
+  if(r){
+    const bc=outcome==='win'?'win':outcome==='loss'?'loss':'draw';
+    const lbl=outcome==='win'?'W':outcome==='loss'?'L':'D';
+    rightEl=`<div class="result-badge ${bc}">${lbl} ${r.wbc}–${r.opp}</div>`;
+    if(adminMode)rightEl+=`<div class="edit-pencil">✏️</div>`;
+  }else if(!isBye&&past){
+    rightEl=`<span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--red-light);opacity:0.4">${adminMode?'✏️ add':'no result'}</span>`;
+  }else if(!isBye){
+    rightEl=`<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--red-light);white-space:nowrap">${leagueTime(league)}</div>`;
+  }
+
+  return`<div class="fixture-card ${tc} ${canClick?'clickable':''} ${r?'has-result':''}" ${onclick}>
+    <div class="fixture-date-block"><div class="fix-day">${day}</div><div class="fix-month">${month}</div></div>
+    <div class="fixture-divider"></div>
+    <div class="fixture-info">
+      <div class="fixture-opponent">${isBye?'— Bye Week —':(f.home?'vs ':'@ ')+f.opponent}</div>
+      <div class="fixture-meta">
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:${leagueColor(league)}">${leagueLabel(league)}</span>
+        ${!isBye?`<span class="venue-pill ${tc}">${f.home?'Home':'Away'}</span>`:''}
+      </div>
+    </div>
+    ${rightEl}
+  </div>`;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderNextMatch(){
+  const f=allSorted().find(f=>!isPast(f.date)&&f.home!==null);
+  const el=document.getElementById('next-match-container');
+  if(!f){el.innerHTML='';return;}
+  el.innerHTML=`<div class="next-match-card">
+    <div class="next-label">Next Match · ${leagueLong(f.league)} · Game ${f.game}</div>
+    <div class="next-match-header">
+      <div class="next-teams">WBC ${f.home?'vs':'@'}<br>${f.opponent}</div>
+      <span class="next-venue-badge">${f.home?'Home':'Away'}</span>
+    </div>
+    <div class="next-match-footer">
+      <div class="next-detail">📅 ${fullDate(f.date)}</div>
+      <div class="next-detail">🕡 ${leagueTime(f.league)}</div>
+    </div>
+  </div>`;
+}
+
+function renderUpcoming(){
+  const list=allSorted().filter(f=>!isPast(f.date)&&f.home!==null).slice(0,5);
+  document.getElementById('upcoming-list').innerHTML=
+    list.length?list.map(f=>fixtureCard(f,f.league)).join(''):'<div class="empty-state">Season complete</div>';
+}
+
+function renderHomeStats(){
+  const played=allSorted().filter(f=>f.home!==null&&getResult(f.league,f.game));
+  const wins=played.filter(f=>outcomeOf(getResult(f.league,f.game))==='win');
+  document.getElementById('stat-played').textContent=played.length;
+  document.getElementById('stat-wins').textContent=wins.length;
+}
+
+function filterFixtures(type){
+  ['all','knight','clegg','parl','util','home','away'].forEach(t=>{
+    document.getElementById('fb-'+t).className='filter-btn';
+  });
+  const ab=document.getElementById('fb-'+type);
+  const cls={'knight':'f-knight','clegg':'f-clegg','parl':'f-parl','util':'f-util'};
+  ab.className='filter-btn '+(cls[type]||'f-active');
+
+  let list=allSorted();
+  if(type==='knight')list=list.filter(f=>f.league==='knight');
+  else if(type==='clegg')list=list.filter(f=>f.league==='clegg');
+  else if(type==='parl')list=list.filter(f=>f.league==='parl');
+  else if(type==='util')list=list.filter(f=>f.league==='util');
+  else if(type==='home')list=list.filter(f=>f.home===true);
+  else if(type==='away')list=list.filter(f=>f.home===false);
+
+  let html='',lastMonth='';
+  list.forEach(f=>{
+    const{month}=fmtDate(f.date);
+    if(month!==lastMonth){html+=`<div class="fixture-group-label">${month} 2026</div>`;lastMonth=month;}
+    html+=fixtureCard(f,f.league);
+  });
+  document.getElementById('fixtures-list').innerHTML=html||'<div class="empty-state">No fixtures</div>';
+}
+
+function calcStats(fixtures,league){
+  let p=0,w=0,d=0,l=0;
+  fixtures.forEach(f=>{
+    if(f.home===null)return;
+    const r=getResult(league,f.game);
+    if(!r)return;
+    p++;const o=outcomeOf(r);
+    if(o==='win')w++;else if(o==='draw')d++;else l++;
+  });
+  return{p,w,d,l,pts:w*2+d};
+}
+
+function renderTable(teams,fixtures,league,elId,clubName){
+  const stats=calcStats(fixtures,league);
+  document.getElementById(elId).innerHTML=teams.map((name,i)=>{
+    const isWBC=name===clubName;
+    const s=isWBC?stats:null;
+    return`<div class="table-row ${isWBC?'wbc-row':''}">
+      <div class="td-pos">${i+1}</div>
+      <div class="td-name ${isWBC?'wbc-name':''}">${isWBC?'⭐ WBC':name}</div>
+      <div class="td-num">${s?s.p:'—'}</div><div class="td-num">${s?s.w:'—'}</div>
+      <div class="td-num">${s?s.d:'—'}</div><div class="td-num">${s?s.l:'—'}</div>
+      <div class="td-pts">${s?s.pts:'—'}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderAll(){
+  renderHomeStats();
+  renderNextMatch();
+  renderUpcoming();
+  const active=document.querySelector('[id^="fb-"].f-active,[id^="fb-"].f-knight,[id^="fb-"].f-clegg,[id^="fb-"].f-parl,[id^="fb-"].f-util');
+  filterFixtures(active?active.id.replace('fb-',''):'all');
+  renderTable(knightTeams,knightFixtures,'knight','knight-table','Westerhope');
+  renderTable(cleggTeams,cleggFixtures,'clegg','clegg-table','Westerhope');
+  renderTable(parlTeams,parlFixtures,'parl','parl-table','Westerhope');
+  renderTable(utilTeams,utilFixtures,'util','util-table','Westerhope');
+}
+
+function showTab(tab,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('active');
+}
+
+loadResults();
+</script>
+</body>
+</html>
