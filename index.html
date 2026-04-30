@@ -610,7 +610,7 @@ function fixtureCard(f,league){
   const r=isBye?null:getResult(league,f.game);
   const outcome=outcomeOf(r);
   const tc=isBye?'bye':(f.home?`home-${league}`:`away-${league}`);
-  const canClick=!isBye&&(past||adminMode);
+  const canClick=!isBye&&adminMode;
   const onclick=canClick?`onclick="openModal('${league}',${f.game},'${f.opponent.replace(/'/g,"\\'")}')"` :'';
 
   let rightEl='';
@@ -620,7 +620,7 @@ function fixtureCard(f,league){
     rightEl=`<div class="result-badge ${bc}">${lbl} ${r.wbc}–${r.opp}</div>`;
     if(adminMode)rightEl+=`<div class="edit-pencil">✏️</div>`;
   }else if(!isBye&&past){
-    rightEl=`<span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--red-light);opacity:0.4">${adminMode?'✏️ add':'no result'}</span>`;
+    rightEl=adminMode?`<span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--red-light);opacity:0.4">✏️ add</span>`:'';
   }else if(!isBye){
     rightEl=`<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--red-light);white-space:nowrap">${leagueTime(league)}</div>`;
   }
